@@ -68,21 +68,22 @@ class _MyAppState extends State<MyApp> {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  // Instant Notification
-  Future instantNotification() async {
-    var android = AndroidNotificationDetails(
-      "id",
-      "channel",
-      "description",
-    );
-
-    // If working only for IOS so pass Id, channel and desc as defined above.
+  // Show Notification
+  Future showNotification() async {
+    print('show  notification');
+    var android = AndroidNotificationDetails("id", "channel", "description",
+        importance: Importance.max);
     var ios = IOSNotificationDetails();
+    var generalNotificationDetails =
+        new NotificationDetails(android: android, iOS: ios);
 
-    var platform = new NotificationDetails(android: android, iOS: ios);
-    await flutterLocalNotificationsPlugin.show(0, 'Demo Instant Notification',
-        'Body of Instant Notification', platform,
-        payload: 'Welcome to Demo App');
+    // await flutterLocalNotificationsPlugin.show(
+    //     0, "Task", "you created a task", generalNotificationDetails);
+
+    var scheduleTime = DateTime.now().add(Duration(seconds: 10));
+    await flutterLocalNotificationsPlugin.schedule(0, "Task",
+        "Schedule Notification", scheduleTime, generalNotificationDetails,
+        androidAllowWhileIdle: true);
   }
 
   @override
@@ -93,18 +94,22 @@ class _MyAppState extends State<MyApp> {
         title: new Text('Flutter notification demo'),
       ),
       body: new Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: instantNotification,
-              child: new Text(
-                'showNotification',
-              ),
-            ),
-          ],
+        child: ElevatedButton(
+          onPressed: showNotification,
+          child: new Text(
+            'Flutter Notification',
+          ),
         ),
       ),
     );
+  }
+
+  // On Selected Notification
+  Future notificationSelected(String payload) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: Text('Flutter Notification'),
+            ));
   }
 }
