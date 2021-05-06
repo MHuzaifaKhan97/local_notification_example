@@ -70,7 +70,11 @@ class _MyAppState extends State<MyApp> {
 
   // Instant Notification
   Future instantNotification() async {
-    var android = AndroidNotificationDetails("id", "channel", "description");
+    var android = AndroidNotificationDetails(
+      "id",
+      "channel",
+      "description",
+    );
 
     // If working only for IOS so pass Id, channel and desc as defined above.
     var ios = IOSNotificationDetails();
